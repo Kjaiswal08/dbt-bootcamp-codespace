@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'view',
+    )
+}}
+--We can mention the above block of config to indicate how we want to store the below query result 
 WITH src_listings AS (
   SELECT
     *

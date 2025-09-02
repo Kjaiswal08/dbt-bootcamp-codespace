@@ -33,5 +33,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbtlearn:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    +materialized: view # By Default any src or dim or fact table create will be a view
+    dim:
+      +materialized: table #Only Tables create in dim folder will be tables.
+    src:
+      +materialized: ephemeral #This setting makes the table created temporary and are not stored in
+      #the DW, this sql files will be executed every time we 'dbt run' and since DW doesnot have the 
+      #table it cannot access the data in it directly. #We can see the result of running them in tgt folder
