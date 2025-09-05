@@ -5,7 +5,18 @@ sources:
     schema: raw
     tables:
       - name: listings
+      # TO run test for this we have to use dbt test --select source:AIRBNB.listings as they are not
+      # available in dbt but in the warehouse
         identifier: raw_listings
+        columns:
+          - name: room_type
+            tests:
+              - dbt_expectations.expect_column_distinct_count_to_equal:
+                  value: 4
+          - name: price
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex:
+                  regex: "^\\\\$[0-9][0-9\\\\.]+$"
 
       - name: hosts
         identifier: raw_hosts
