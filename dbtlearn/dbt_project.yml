@@ -43,3 +43,5 @@ models:
       +materialized: ephemeral #This setting makes the table created temporary and are not stored in
       #the DW, this sql files will be executed every time we 'dbt run' and since DW doesnot have the 
       #table it cannot access the data in it directly. #We can see the result of running them in tgt folder
+vars:
+  user_name: This is value declared in dbt_project
