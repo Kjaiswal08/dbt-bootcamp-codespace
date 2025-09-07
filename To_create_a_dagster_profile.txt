@@ -1,0 +1,8 @@
+pip install dagster-dbt,dagster-webserver
+dagster-dbt project scaffold --project-name dagster_dbt_project --dbt-project-dir=dbtlearn
+
+After this to run the dagster project created go into the new dir created and execute:
+DAGSTER_DBT_PARSE_PROJECT_ON_LOAD=1 dagster dev 
+
+Since Dagster is orchetration tool we have to define a trigger for dagster to run to do this 
+go in the dir and search schedules.py and set a run time.(Do this before the above)
