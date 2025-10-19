@@ -23,6 +23,13 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+#This are hooks which run when we run any dbt run/compile/test and performs some task(here creating
+# a audit table)
+on-run-start:
+  - "CREATE TABLE IF NOT EXISTS {{ target.schema }}.audit_log (
+      model_name STRING,
+      run_timestamp TIMESTAMP
+    )"
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -32,11 +39,17 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   dbtlearn:
-    # Config indicated by + and applies to all files under models/example/
-    +materialized: view # By Default any src or dim or fact table create will be a view
+    +grants:
+      select: ["transform", "reporter"]
+#This a new way of granting permissions rather than using hooks
+
     +post-hooks:
       - "Grant Select on {{this}} to role Reporter"
     #This will grant Select permisiion of a model when it's build to Reporter. 
+      - "INSERT INTO {{ target.schema }}.audit_log VALUES ('{{ this }}', CURRENT_TIMESTAMP)"
+    +materialized: view # By Default any src or dim or fact table create will be a view
+    
+    #This will insert into the audit table values after each model is build.
     dim:
       +materialized: table #Only Tables create in dim folder will be tables.
     src:
@@ -46,7 +59,7 @@ models:
 vars:
   user_name: This is value declared in dbt_project
 
-data_tests:
+  data_tests:
   +store_failures: true
   +schema: _test_failures
 #if we want to store failures while testing, in the database we have to enable this setting.

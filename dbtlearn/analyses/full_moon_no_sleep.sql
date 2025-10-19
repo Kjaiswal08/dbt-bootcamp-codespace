@@ -13,3 +13,5 @@ GROUP BY
 ORDER BY
     is_full_moon,
     review_sentiment
+--This query are not materialized and whenever we compile it through run/compile commands it generates
+--a query which we can run in our database.
