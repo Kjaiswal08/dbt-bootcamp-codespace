@@ -45,3 +45,8 @@ models:
       #table it cannot access the data in it directly. #We can see the result of running them in tgt folder
 vars:
   user_name: This is value declared in dbt_project
+
+data_tests:
+  +store_failures: true
+  +schema: _test_failures
+#if we want to store failures while testing, in the database we have to enable this setting.
