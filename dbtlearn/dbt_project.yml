@@ -59,7 +59,7 @@ models:
 vars:
   user_name: This is value declared in dbt_project
 
-  data_tests:
+tests:
   +store_failures: true
   +schema: _test_failures
 #if we want to store failures while testing, in the database we have to enable this setting.
